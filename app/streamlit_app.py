@@ -5,7 +5,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import joblib
 from sklearn.metrics import roc_curve, precision_recall_curve
-
+from sklearn.metrics import roc_auc_score, confusion_matrix
+import seaborn as sns
 from predict import predict_transaction
 
 
@@ -136,6 +137,25 @@ with tab2:
     X_scaled = scaler.transform(X)
 
     y_proba = model.predict_proba(X_scaled)[:, 1]
+
+    auc = roc_auc_score(y, y_proba)
+
+    y_pred = (y_proba >= threshold).astype(int)
+
+    cm = confusion_matrix(y, y_pred)
+
+    fig_cm, ax_cm = plt.subplots()
+    sns.heatmap(cm, annot=True, fmt='d', cmap='Blues', ax=ax_cm)
+    ax_cm.set_title("Confusion Matrix")
+    ax_cm.set_xlabel("Predicted")
+    ax_cm.set_ylabel("Actual")
+
+    st.pyplot(fig_cm)
+    plt.close(fig_cm)
+
+    st.write(f"ROC AUC Score: {auc:.3f}")
+
+    st.write(f"Fraud Ratio: {y.mean():.3f}")
 
     # -----------------------------
     # ROC Curve
