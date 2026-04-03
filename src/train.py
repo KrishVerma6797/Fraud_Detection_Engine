@@ -21,11 +21,17 @@ def train_model():
         X_scaled, y, test_size=0.2, stratify=y, random_state=42
     )
 
+    scale_pos_weight = (len(y) - sum(y)) / sum(y)
+
     model = xgb.XGBClassifier(
-        n_estimators=200,
-        max_depth=5,
-        learning_rate=0.1,
-        eval_metric="logloss"
+        n_estimators=400,
+        max_depth=6,
+        learning_rate=0.05,
+        subsample=0.9,
+        colsample_bytree=0.9,
+        scale_pos_weight=scale_pos_weight,
+        eval_metric="logloss",
+        random_state=42
     )
 
     model.fit(X_train, y_train)
