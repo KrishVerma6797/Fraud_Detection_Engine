@@ -38,6 +38,8 @@ ML PROJECT - FRAUD DET/
 │   ├── predict.py
 │   └── streamlit_app.py
 │
+|──  generate_data.py
+|
 ├── data/
 │   └── realistic_fraud_dataset_200k.csv
 │
